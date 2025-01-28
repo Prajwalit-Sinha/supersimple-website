@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Text Extractor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .upload-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .upload-box input, .upload-box select {
+            margin: 10px;
+            padding: 10px;
+            width: 50%;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none;
+        }
+        .preview-boxes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .preview-box {
+            width: 45%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .copy-button {
+            margin-top: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 20px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Image Text Extractor</h1>
+        
+        <div id="initial-interface">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="upload-box">
+                    <label for="language_select">Select Language</label>
+                    <select name="language_select" id="language_select">
+                        <option value="eng">English</option>
+                        <option value="hin">Hindi</option>
+                        <option value="mix">Mixed (Eng+Hin)</option>
+                    </select>
+                </div>
+
+                <div class="upload-box">
+                    <label for="image">Choose an Image</label>
+                    <input type="file" name="image" id="image" required>
+                </div>
+
+                <div class="buttons">
+                    <button type="submit">Upload</button>
+                </div>
+            </form>
+        </div>
+
+        {% if uploaded_message %}
+            <p class="message">{{ uploaded_message }}</p>
+        {% endif %}
+
+        {% if extracted_text %}
+            <div id="generated-text">
+                <h2>Generated Text</h2>
+                <div class="preview-boxes">
+                    <div class="preview-box">
+                        <h3>As It Is Text</h3>
+                        <textarea id="as-it-is-text" readonly>{{ extracted_text }}</textarea>
+                        <button class="copy-button" onclick="copyText('as-it-is-text')">Copy As It Is</button>
+                    </div>
+                    <div class="preview-box">
+                        <h3>Autocorrected Text</h3>
+                        <textarea id="autocorrect-text" readonly>{{ autocorrected_text }}</textarea>
+                        <button class="copy-button" onclick="copyText('autocorrect-text')">Copy Autocorrected</button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function copyText(elementId) {
+            // Get the text area element
+            var textArea = document.getElementById(elementId);
+
+            // Select the text in the text area
+            textArea.select();
+            textArea.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text to the clipboard
+            navigator.clipboard.writeText(textArea.value)
+                .then(() => {
+                    alert("Text copied to clipboard!");
+                })
+                .catch((err) => {
+                    alert("Failed to copy text: " + err);
+                });
+        }
+    </script>
+</body>
+</html>

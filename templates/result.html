@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extracted Text</title>
+</head>
+<body>
+    <h1>Extracted Text:</h1>
+    <p>{{ extracted_text }}</p>
+
+    <h2>Detected Language: {{ detected_language }}</h2>
+
+    <h2>Choose Your Copy Option</h2>
+    <form action="/exact_copy" method="POST">
+        <input type="hidden" name="text" value="{{ extracted_text }}">
+        <button type="submit">Copy Exact Text</button>
+    </form>
+
+    <form action="/autocorrect" method="POST">
+        <input type="hidden" name="text" value="{{ extracted_text }}">
+        <button type="submit">Copy Auto-Corrected Text</button>
+    </form>
+
+    <br>
+    <a href="/">Upload Another Image</a>
+</body>
+</html>
